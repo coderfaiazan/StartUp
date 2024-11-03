@@ -51,10 +51,12 @@ const ProjectSchema = new mongoose.Schema({
          default:"active" },
          
       rewards:[{
-        type:String
+        type:Schema.Types.ObjectId,
+        ref:'Reward'
       }],
       transactions:[{
-        type:String,
+        type:Schema.Types.ObjectId,
+        ref:'Transaction'
       }], 
       backers:{
         type:Number,

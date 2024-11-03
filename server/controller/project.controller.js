@@ -134,7 +134,7 @@ async function getProject(req, res, next) {
     try {
         var {title} = req.params;
         title = title.replace(/-/g, " ");
-        const project = await projectmodel.findOne({title})
+        const project = await projectmodel.findOne({title}).populate('rewards')
         if(!project)
         {
             return next(new AppError("Project does not exist",400));
@@ -266,7 +266,8 @@ async function updateProject(req, res, next) {
 async function addReward(req, res, next) {
     try {
         const { projectId, title, description, minContribution, available, estimatedDate } = req.body;
-
+         console.log(req.body);
+         
         //Validate required fields
         if (!projectId || !title || !description || !minContribution || !available || !estimatedDate) {
             return next(new AppError("All fields are required", 400));

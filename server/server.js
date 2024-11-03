@@ -6,6 +6,7 @@ dotenv.config({
 import app from "./app.js"
 import connecttoDB from "./config/connecttoDB.js";
 import cloudinary from "cloudinary"
+import Razorpay from "razorpay"
 
 
 const PORT=process.env.PORT||3000;
@@ -16,6 +17,12 @@ cloudinary.config({
     api_secret:process.env.CLOUDINARY_API_SECRET
     
     });
+//razor pay ka configraturation set karna hai
+//this is a instance of razor pay
+export const razorpay=new Razorpay({
+  key_id:process.env.RAZORPAY_KEY_ID,
+  key_secret:process.env.RAZORPAY_SECRET
+  })
 
 app.listen(PORT,async ()=>{
     await connecttoDB();
