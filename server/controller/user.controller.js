@@ -207,28 +207,40 @@ async function logout(req,res,next){
 
 }
 
-async function getprofile(req,res,next){
-
+async function getUser(req, res, next) {
     try {
+        // Fetch user by ID and populate the projects and backedProjects fields
+        const userId= req.body.user.id;
+        const user = await usermodel.findById(userId)
+            .populate('projects') // Populate projects created by the user
+            .populate({
+                path: 'backedProjects.projectId', // Populate project details in backedProjects
+                select: 'title description' // Select specific fields if needed
+            })
+            // .populate({
+            //     path: 'backedProjects.rewardId', // Populate reward details in backedProjects
+            //     select: 'name description' // Select specific fields if needed
+            // });
 
-        const userid = req.body.user.id;
-        
-        const user = await usermodel.findById(userid);
-        
-        return res.status(200).json({
+        if (!user) {
+            return next(new AppError("User not found", 404));
+        }
+
+        // Respond with the populated user data
+        res.status(200).json({
             success: true,
-            message: "user detail",
-            user
-
-        })
+            data: user
+        });
+    } catch (err) {
+        console.error("Error:", err);
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
     }
-    catch (err) {
-        return next(new AppError("failed to fetch user detail", 405));
-
-
-    }
-
 }
+
+
 
 async function changepassword(req,res,next){
 
@@ -425,4 +437,4 @@ async function reset(req, res, next){
 }
 
 
-export {register,login,logout,getprofile,changepassword,updateuser,forgot,reset};
+export {register,login,logout,getUser,changepassword,updateuser,forgot,reset};

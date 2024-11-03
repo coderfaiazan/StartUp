@@ -66,19 +66,20 @@ const userSchema= new mongoose.Schema({
       type:Date,
     },
     projects: [{
-      type:String
-    }], // Array of project IDs created by the user
-    backedProjects: [
-      {
-        projectId:{
-          type:String
-        } ,// ID of the project backed
-        amount: Number, // Amount contributed
-        rewardId: {
-          type:String
-        } // Associated reward ID, if any
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project' // Reference to Project collection
+  }],
+  backedProjects: [{
+      projectId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Project' // Reference to Project collection
+      },
+      amount: Number,
+      rewardId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Reward' // Reference to Reward collection
       }
-    ]
+  }]
   
    
   },{

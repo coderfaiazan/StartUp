@@ -95,40 +95,45 @@ async function projectRegisteration(req, res, next) {
 }
 async function deleteProject(req, res, next) {
     try {
+        // Extract title from request parameters
         const { projectId } = req.params;
+
+        // Check if the project exists in the database using the title
         const project = await projectmodel.findById(projectId);
-
         if (!project) {
-            return next(new AppError("Project does not exist", 401));
+            return next(new AppError("Project does not exist", 404));
         }
-         if(project.mediaurls && project.mediaurls[0].public_id)
-         {
-            const publicid=project.mediaurls[0].public_id;
-            try {
-                await cloudinary.v2.uploader.destroy(publicid);
-            } catch (error) {
-                return next(new AppError("cant delete file fron cloudinary",403));
-            }
-         }
-        await projectmodel.findByIdAndDelete(projectId);
 
+        // Check if the project has media URLs and delete the associated Cloudinary resource if present
+        if (project.mediaurls && project.mediaurls.length > 0 && project.mediaurls[0].public_id) {
+            const publicId = project.mediaurls[0].public_id;
+            try {
+                await cloudinary.v2.uploader.destroy(publicId);
+            } catch (error) {
+                return next(new AppError("Cannot delete file from Cloudinary", 403));
+            }
+        }
+
+        // Delete the project from the database by title
+        await projectmodel.findOneAndDelete({ title });
+
+        // Respond with success message
         res.status(200).json({
             success: true,
-            message: "Project deleted successfully"
+            message: "Project deleted successfully",
         });
-
     } catch (err) {
-        console.log("Error>>", err);
+        console.error("Error:", err);
         return res.status(500).json({
             success: false,
-            message: err.message
+            message: err.message,
         });
     }
 }
-
 async function getProject(req, res, next) {
     try {
-        const {title} = req.body;
+        var {title} = req.params;
+        title = title.replace(/-/g, " ");
         const project = await projectmodel.findOne({title})
         if(!project)
         {
@@ -147,6 +152,44 @@ async function getProject(req, res, next) {
         });
     }
     
+}
+async function getProjects(req, res, next) {
+    try {
+        // Extract category from query parameters, if present
+        const { category } = req.params;
+
+        // Check if category is specified and retrieve projects accordingly
+        let projects;
+        if (category) {
+            if(category=="All") {
+                // If no category specified, retrieve all projects
+                projects = await projectmodel.find();
+                res.status(200).json({
+                    success: true,
+                    data: projects,
+                });
+            }
+          else { // Ensure the category is valid
+            const validCategories = ["Technology", "Art", "Education", "Health"];
+            if (!validCategories.includes(category)) {
+                return next(new AppError("Invalid category", 400));
+            }
+            // Find projects with the specified category
+            projects = await projectmodel.find({ category });
+            res.status(200).json({
+                success: true,
+                data: projects,
+            });
+        } 
+    }
+
+    } catch (err) {
+        console.error("Error:", err);
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        });
+    }
 }
 
 async function updateProject(req, res, next) {
@@ -359,5 +402,5 @@ async function AddComents(req, res, next) {
     }
 }
 export { projectRegisteration , addReward, posts,AddComents, updateProject,deleteProject,
-    getProject
+    getProject, getProjects
 };
