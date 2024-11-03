@@ -18,6 +18,7 @@ async function register(req,res,next){
 
     try {
         const { name, email, password } = req.body;
+        console.log("req.body:",req.body);
        
         if (!name || !email || !password) {
             //baar baar same error likhna is not a good practice
@@ -27,7 +28,8 @@ async function register(req,res,next){
             // })
             return next(new AppError("All feild are required", 400));// yahan par humko ek error mil gyi hai ab is error ko responce me bhejne ke liye we use middleware and next keh rha hai ki error ko aage bhej do
         }
-
+         
+         
         //1st method to check duplicacy
         // duplicate entry daal rhe ho then 11000 error dega jisse pta lag jaega ki hum duplicate entry daal rhe hain ya nhi
 

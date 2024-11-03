@@ -1,7 +1,7 @@
 import express from "express";
 import upload from "../middleware/multer.middleware.js";
 import { projectRegisteration ,addReward, posts,AddComents,updateProject
-    ,deleteProject
+    ,deleteProject, getProject
 } from "../controller/project.controller.js";
 import isloggedin from "../middleware/auth.login.middleware.js";
 const router=express.Router();
@@ -17,4 +17,5 @@ router.post('/comment',isloggedin,AddComents);
 router.put('/update/:id',upload.single('mediaurls'),isloggedin,updateProject );
 //simply delete the project by giving projectid by req.params
 router.put('/delete/:projectId',deleteProject )
+router.get('/me', getProject)
 export default router;

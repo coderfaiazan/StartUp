@@ -126,6 +126,29 @@ async function deleteProject(req, res, next) {
     }
 }
 
+async function getProject(req, res, next) {
+    try {
+        const {title} = req.body;
+        const project = await projectmodel.findOne({title})
+        if(!project)
+        {
+            return next(new AppError("Project does not exist",400));
+        }
+        return res.status(200).json({
+            success:true,
+            message:"project details",
+            project
+        })
+    } catch (err) {
+          console.log("Error>>", err);
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+    
+}
+
 async function updateProject(req, res, next) {
     try {
         const { title, description, category, fundingGoal, amountRaised, deadline } = req.body;
@@ -335,4 +358,6 @@ async function AddComents(req, res, next) {
         });   
     }
 }
-export { projectRegisteration , addReward, posts,AddComents, updateProject,deleteProject};
+export { projectRegisteration , addReward, posts,AddComents, updateProject,deleteProject,
+    getProject
+};
