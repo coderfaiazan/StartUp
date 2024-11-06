@@ -6,6 +6,7 @@ import errorMiddleware from "./middleware/errorMiddleware.js";
 import { configDotenv } from "dotenv";
 import userroutes from "./routes/userRoutes.js";
 import projectroutes from "./routes/projectRoutes.js"
+import paymentsroutes from "./routes/paymentsRoutes.js"
 import cookieParser from "cookie-parser";
 //import articleRoutes from "./routes/articles.routes.js";
 
@@ -25,7 +26,7 @@ credentials:true//cookie set ho jaegi
 app.use(cookieParser());
 app.use('/api/v1/user',userroutes);
 app.use('/api/v1/project',projectroutes);
-//app.use('/api/v1/company',companyroutes)
+app.use('/api/v1/payment',paymentsroutes);
 app.use('ping',(req,res,next)=>{
 return res.send("pong");
 })

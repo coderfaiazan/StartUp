@@ -1,20 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const TransactionSchema= new mongoose.Schema({
-   razorpay_payment_id:{
-      type:String,
-      required:[true,'razorpay_payment_id is required'],
-
-  },
-  razorpay_subscription_id:{
-   type:String,
-   required:[true,'razorpay_subscription_id is required']
-   
-  },
-  razorpay_signature:{
-      type:String,
-
-  },
+   order_id:{
+      type:String
+   },
  ProjectId:{
     type:Schema.Types.ObjectId,
     ref:"Project",
@@ -32,11 +21,13 @@ const TransactionSchema= new mongoose.Schema({
 
  paymentStatus:{
     type:String,
-    enum:["pending","completed","failed"]
+    enum:["pending","completed","failed"],
+    default:"pending"
  },
  paymentMethod:{
     type:String,
-    enum:["credit_card","paypal","razorpay"]
+    enum:["credit_card","paypal","razorpay"],
+    default:"razorpay"
  },
  transactionDate:{
     type:Date,

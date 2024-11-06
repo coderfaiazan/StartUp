@@ -80,7 +80,7 @@ const userSchema= new mongoose.Schema({
           ref: 'Reward' // Reference to Reward collection
       }
   }]
-  
+  ,
    
   },{
     timestamps:true

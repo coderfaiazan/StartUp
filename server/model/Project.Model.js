@@ -59,10 +59,12 @@ const ProjectSchema = new mongoose.Schema({
         ref:'Transaction'
       }], 
       backers:{
-        type:Number,
+        type:Schema.Types.ObjectId,
+        ref:"User"
       },
     posts:[{
-      type:String
+      type:Schema.Types.ObjectId,
+      ref:"Post"
     }]
 },{
     timestamps:true
