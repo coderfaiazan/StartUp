@@ -27,7 +27,7 @@ function ProjectCard({ project }) {
               {(project.amountRaised / project.fundingGoal) * 100}% funded
             </span>
             <span>
-              {calculateDaysToGo(project.createdAt, project.deadline)} days to
+              {calculateDaysToGo(Date.now(), project.deadline)} days to
               go
             </span>
           </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { calculateDaysToGo } from "../service/operations";
+import { calculateDaysToGo, formatDate } from "../service/operations";
 
 function UserDashboard() {
   // Mock user data
@@ -53,20 +53,21 @@ function UserDashboard() {
                           funded
                         </span>
                         <span>
-                          {calculateDaysToGo(
-                            project.createdAt,
-                            project.deadline
-                          )}{" "}
-                          days to go
+                          {calculateDaysToGo(Date.now(), project.deadline)} days
+                          to go
                         </span>
                       </div>
-                      <div className="mt-2">
+                      <div className="mt-2 flex justify-between">
                         <Link
                           to={`/project/${project.title.replaceAll(" ", "-")}`}
                           className="text-blue-600 hover:underline"
                         >
                           View Project
                         </Link>
+                        <span className="text-sm text-gray-600">
+                          Created On :{" "}
+                          {formatDate(project.createdAt, "DD-MM-YYYY")}
+                        </span>
                       </div>
                     </div>
                   ))
