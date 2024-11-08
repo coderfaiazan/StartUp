@@ -9,7 +9,7 @@ import cloudinary from "cloudinary"
 import Razorpay from "razorpay"
 
 
-const PORT=process.env.PORT||3000;
+const PORT=process.env.PORT||7000;
 
 cloudinary.config({
     cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
