@@ -3,8 +3,7 @@ import { PaperAirplaneIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useSelector, useDispatch } from "react-redux";
 import { addMessage, sendRagChatCompletion } from "../Redux/Slices/chatSlice";
 
-
-const FullPageChat = ({ onClose, onSubmit }) => {
+const FullPageChat = ({ onClose }) => {
   const [inputMessage, setInputMessage] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -13,14 +12,6 @@ const FullPageChat = ({ onClose, onSubmit }) => {
   const dispatch = useDispatch();
 
   const { messages } = useSelector((state) => state.chat);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (inputMessage.trim() === "") return;
-
-  //   onSubmit(inputMessage);
-  //   setInputMessage("");
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,15 +53,15 @@ const FullPageChat = ({ onClose, onSubmit }) => {
               message.role == "assistant" ? "justify-start" : "justify-end"
             }`}
           >
-            <div
-              className={`max-w-[75%] p-3 rounded-lg ${
+            <pre
+              className={`max-w-[75%] text-wrap pr-4 p-3 rounded-lg ${
                 message.role == "assistant"
                   ? "bg-white text-gray-800 shadow"
                   : "bg-blue-600 text-white"
               }`}
             >
               {message.content}
-            </div>
+            </pre>
           </div>
         ))}
         <div ref={messagesEndRef} />

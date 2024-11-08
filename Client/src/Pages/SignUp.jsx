@@ -16,11 +16,15 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you would typically handle the sign-up logic
-    dispatch(userSignup({name,email,password}))
-    navigate("/");
+    const res = await dispatch(userSignup({ name, email, password }));
+    if (res) {
+      navigate("/");
+    } else {
+      alert("Failed to Sign Up!")
+    }
     // console.log("Sign up attempt with:", {
     //   name,
     //   email,

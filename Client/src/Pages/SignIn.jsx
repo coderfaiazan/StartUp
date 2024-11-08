@@ -12,12 +12,16 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you would typically handle the sign-in logic with your API
     // For this example, we'll simulate a successful login
-    dispatch(userSignin({ email, password }));
-    navigate("/");
+    const res = await dispatch(userSignin({ email, password }));
+    if (res) {
+      navigate("/");
+    } else {
+      alert("Failed to Login!");
+    }
   };
 
   return (

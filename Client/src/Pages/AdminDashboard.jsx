@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { useDispatch } from "react-redux";
 import { createCollectionItem } from "../Redux/Slices/chatSlice";
+import ErrorPage from "./ErrorPage";
 
 const AdminDashboard = () => {
   const [chatbotData, setChatbotData] = useState(null);
@@ -63,9 +64,13 @@ const AdminDashboard = () => {
     }
   };
 
-  // if (!user || user.role !== 'admin') {
-  //   return <div>Access Denied. Admin privileges required.</div>;
-  // }
+  if (!user || user.role !== "ADMIN") {
+    return (
+      <div>
+        <ErrorPage />
+      </div>
+    );
+  }
 
   return (
     <div className="flex bg-gray-100">

@@ -31,17 +31,6 @@ const ChatBot = () => {
     }
   }, [messages, isOpen]);
 
-  // useEffect(() => {
-  //   if (!currentCollection) {
-  //     dispatch(createVectorStoreCollection("chatbot"))
-  //       .unwrap()
-  //       .then(() => console.log("Vector store collection created successfully"))
-  //       .catch((error) =>
-  //         console.error("Failed to create vector store collection:", error)
-  //       );
-  //   }
-  // }, [dispatch, currentCollection]);
-
   const toggleChat = () => setIsOpen(!isOpen);
   const openFullPageChat = () => navigate("/chat");
 
@@ -107,15 +96,15 @@ const ChatBot = () => {
                   message.role === "assistant" ? "text-left" : "text-right"
                 }`}
               >
-                <div
-                  className={`inline-block p-2 rounded-lg ${
+                <pre
+                  className={`inline-block text-wrap p-2 rounded-lg ${
                     message.role === "assistant"
                       ? "bg-gray-200 text-gray-800"
                       : "bg-blue-600 text-white"
                   }`}
                 >
                   {message.content}
-                </div>
+                </pre>
               </div>
             ))}
             <div ref={messagesEndRef} />
