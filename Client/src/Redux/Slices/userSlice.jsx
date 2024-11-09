@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const server_url = "http://localhost:7000";
+const server_url = import.meta.env.VITE_SERVER_URL;
 
 // Helper function to set a JWT as a cookie
 function setCookie(name, value, days) {
