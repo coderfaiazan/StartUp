@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import {
   CameraIcon,
   PencilIcon,
@@ -23,8 +23,6 @@ import {
 
 function ProjectDetailsPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [showDonationModal, setShowDonationModal] = useState(false);
   const [donationConfirmation, setDonationConfirmation] = useState(null);
   const [isEditingCoverImage, setIsEditingCoverImage] = useState(false);
@@ -138,9 +136,9 @@ function ProjectDetailsPage() {
     );
     if (response) {
       const title = editedProject.title.replaceAll(" ", "-");
-      console.log(title);
-      navigate("/project/" + title);
+      dispatch(fetchProjectByTitle(title));
       window.location.reload();
+      console.log(response);
     }
     setIsEditingDetails(false);
     setIsEditingRewards(false);
@@ -186,10 +184,7 @@ function ProjectDetailsPage() {
         <div className="relative">
           {isAuthor && isEditingCoverImage ? (
             <div className="w-full h-[400px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-              <label
-                htmlFor="coverImage"
-                className="cursor-pointer w-full h-[400px] flex justify-center flex-col items-center"
-              >
+              <label htmlFor="coverImage" className="cursor-pointer w-full h-[400px] flex justify-center flex-col items-center">
                 <CameraIcon className="w-12 h-12 text-gray-400" />
                 <p className="mt-2 text-sm text-gray-500">
                   Click to upload new cover image
@@ -206,10 +201,12 @@ function ProjectDetailsPage() {
           ) : (
             <img
               src={
-                NewImage || project.mediaurls?.secure_url || "/placeholder.jpg"
+                NewImage ||
+                project.mediaurls?.secure_url ||
+                "/placeholder.jpg"
               }
               alt={project.title}
-              className="w-full h-[400px] object-cover rounded-lg shadow-lg"
+              className="w-full h-[400px] object-fill rounded-lg shadow-lg"
             />
           )}
           {isAuthor && isEditingDetails && (
@@ -264,7 +261,8 @@ function ProjectDetailsPage() {
             <div className="flex justify-between text-gray-600">
               <span>{project.backers} backers</span>
               <span>
-                {calculateDaysToGo(Date.now(), project.deadline)} days to go
+                {calculateDaysToGo(project.createdAt, project.deadline)} days to
+                go
               </span>
             </div>
           </div>

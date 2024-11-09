@@ -12,7 +12,7 @@ function HomePage() {
       try {
         // Fetch the collections
         const collections = await getCollection("All");
-        if (collections.data) setProjects(collections.data.splice(0, 3));
+        if (collections.data) setProjects(collections.data.splice(1, 3));
         // console.log(collections);
       } catch (error) {
         console.error("Error fetching projects:", error);

@@ -27,7 +27,7 @@ export const userSignup = createAsyncThunk(
 
       const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data.user));
-      setCookie("token", data.token, 7);
+     // setCookie("token", data.token, 7);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -54,8 +54,8 @@ export const userSignin = createAsyncThunk(
 
       const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data.user));
-      setCookie("token", data.token, 7);
-      localStorage.setItem("authToken", data.token);
+     // setCookie("token", data.token, 7);
+      localStorage.setItem("authToken", data.token); 
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -94,11 +94,10 @@ export const getUserData = createAsyncThunk(
       const response = await fetch(`${server_url}/api/v1/user/me`, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,  // Add the token here
+          // "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
         },
         credentials: "include", // Ensures cookies are sent with the request
-
       });
 
       if (!response.ok) {
@@ -108,7 +107,7 @@ export const getUserData = createAsyncThunk(
 
       const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data.data));
-      setCookie("token", data.token, 7);
+      //setCookie("token", data.token, 7);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

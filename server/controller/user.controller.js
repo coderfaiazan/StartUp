@@ -9,11 +9,11 @@ import cloudinary from "cloudinary";
 
 const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 100,//7 days ke liye cookie set hogi
-    httpOnly: true,
-    secure: true,
-    sameSite: 'None',
-    path: '/',
-};
+  httpOnly: true,
+  secure: true,
+  sameSite: 'None',
+  path: '/',
+}
 
 async function register(req, res, next) {
   try {

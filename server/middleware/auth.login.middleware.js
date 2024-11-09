@@ -6,8 +6,7 @@ const isloggedin=async(req,res,next)=>{
     
   
     const token=req.cookies.token;
-     console.log(token);
-     
+
 
     if(!token){
         return next(new AppError("unauthenticated,please login again",401));

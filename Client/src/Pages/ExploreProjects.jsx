@@ -22,7 +22,7 @@ function ExploreProjects() {
       try {
         // Fetch the collections
         const collections = await getCollection(category);
-        setProjects(collections.data);
+        if (collections.data) setProjects(collections?.data);
         // console.log(collections);
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -67,7 +67,7 @@ function ExploreProjects() {
         </select>
       </div>
 
-      {projects.length > 0 ? (
+      {projects ? (
         <div
           className={
             view === "grid"

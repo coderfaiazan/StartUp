@@ -1,4 +1,4 @@
-const server_url = "http://localhost:7000";
+const server_url = import.meta.env.VITE_SERVER_URL;
 
 export async function getCollection(category) {
   try {

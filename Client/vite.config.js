@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    origin: import.meta.env.VITE_SERVER_URL,
+    origin: "http://localhost:5173",
     proxy: {
       "/v1": {
         target: "https://api.vultrinference.com",

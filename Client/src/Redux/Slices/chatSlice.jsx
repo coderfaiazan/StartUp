@@ -10,10 +10,10 @@ export const createVectorStoreCollection = createAsyncThunk(
   "chat/createVectorStoreCollection",
   async (collectionName, { rejectWithValue }) => {
     try {
-      // console.log(
-      //   "Attempting to create vector store collection:",
-      //   collectionName
-      // );
+      console.log(
+        "Attempting to create vector store collection:",
+        collectionName
+      );
       const response = await axios.post(
         `${VULTR_API_BASE_URL}/vector_store`,
         { name: collectionName },
@@ -24,10 +24,10 @@ export const createVectorStoreCollection = createAsyncThunk(
           },
         }
       );
-      // console.log(
-      //   "Vector store collection created successfully:",
-      //   response.data
-      // );
+      console.log(
+        "Vector store collection created successfully:",
+        response.data
+      );
       return response.data;
     } catch (error) {
       console.error(
@@ -54,7 +54,7 @@ export const createCollectionItem = createAsyncThunk(
         `http://localhost:7000/api/v1/createCollectionItem`,
         data
       );
-      // console.log("Collection item created successfully:", response.data);
+      console.log("Collection item created successfully:", response.data);
       return response.data;
     } catch (error) {
       console.error(
@@ -73,9 +73,9 @@ export const sendRagChatCompletion = createAsyncThunk(
   "chat/sendRagChatCompletion",
   async ({ message }, { rejectWithValue }) => {
     try {
-      // console.log("Sending RAG chat completion request:", {
-      //   message,
-      // });
+      console.log("Sending RAG chat completion request:", {
+        message,
+      });
       const response = await axios.post(
         `${VULTR_API_BASE_URL}/chat/completions/RAG`,
         {
@@ -100,7 +100,7 @@ export const sendRagChatCompletion = createAsyncThunk(
           },
         }
       );
-      // console.log("RAG chat completion received:", response.data);
+      console.log("RAG chat completion received:", response.data);
       return response.data;
     } catch (error) {
       console.error(
@@ -119,12 +119,7 @@ const chatSlice = createSlice({
   initialState: {
     collections: [],
     currentCollection: COLLECTION_ID,
-    messages: [
-      {
-        role: "assistant",
-        content: "Hello! How can I help you with your startup queries today?",
-      },
-    ],
+    messages: [],
     loading: false,
     error: null,
   },
