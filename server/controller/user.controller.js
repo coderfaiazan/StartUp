@@ -149,7 +149,7 @@ async function login(req, res, next) {
     const match = user.comparepassword(password);
     //  asal me yahan wait use karna chahiye but mera compare password shi wrk kar nhi rha hai isliye await use nhi kar rhe
     console.log("match>>>", match);
-    if (!match) {
+    if (!user.comparepassword(password)) {
       return next(new AppError("please enter right password", 404));
     }
     const token = await user.generateJWTToken();
