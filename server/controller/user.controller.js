@@ -8,9 +8,11 @@ import crypto from "crypto";
 import cloudinary from "cloudinary";
 
 const cookieOptions = {
-  maxAge: 7 * 24 * 60 * 60 * 100, //7 days ke liye cookie set hogi
-  httpOnly: true,
-  secure: true,
+  maxAge: 7 * 24 * 60 * 60 * 100,//7 days ke liye cookie set hogi
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None',
+    path: '/',
 };
 
 async function register(req, res, next) {
@@ -165,6 +167,8 @@ async function login(req, res, next) {
 
 async function logout(req, res, next) {
   res.cookie("token", null, {
+    sameSite: 'None',
+    path: '/',
     secure: true,
     httpOnly: true,
     maxAge: 0,
