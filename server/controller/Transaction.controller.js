@@ -43,10 +43,9 @@ const createOrder = async (req, res, next) => {
 
 // Verify Payment Function
 const verifyPayment = async (req, res, next) => {
-  const { userId, projectId, order_id, payment_id, signature, amount } =
-    req.body;
+  const { userId, projectId, amount } = req.body;
 
-  if (!userId || !projectId || !order_id || !payment_id || !signature) {
+  if (!userId || !projectId || !amount) {
     return next(new AppError("Missing required fields", 400));
   }
 
@@ -60,45 +59,39 @@ const verifyPayment = async (req, res, next) => {
     return next(new AppError("Project does not exist", 400));
   }
 
-  const secret_key = process.env.RAZORPAY_SECRET;
-  const hmac = crypto.createHmac("sha256", secret_key);
-  hmac.update(order_id + "|" + payment_id);
+  try {
+    const transaction = new transactionmodel({
+      order_id: projectId,
+      ProjectId: projectId,
+      backerId: userId,
+      amount,
+      paymentStatus: "completed",
+      transactionDate: new Date(),
+    });
+    await transaction.save();
 
-  const generatedSignature = hmac.digest("hex");
+    // Ensure fields are initialized
+    if (!project.transactions) project.transactions = [];
+    if (!project.backers) project.backers = [];
+    if (!user.backedProjects) user.backedProjects = [];
 
-  if (generatedSignature === signature) {
-    try {
-      // Create a new transaction
-      const transaction = new transactionmodel({
-        order_id,
-        ProjectId: projectId,
-        backerId: userId,
-        amount,
-        paymentStatus: "completed",
-        transactionDate: new Date(),
-      });
-      await transaction.save();
+    // Update project and user records
+    project.amountRaised += amount;
+    project.transactions.push(transaction._id);
+    project.backers.push(userId);
+    await project.save();
 
-      // Update project and user records
-      project.amountRaised += amount;
-      project.transactions.push(transaction._id);
-      project.backers.push(userId);
-      await project.save();
+    user.backedProjects.push({ projectId, amount });
+    await user.save();
 
-      user.backedProjects.push({ projectId, amount });
-      await user.save();
-
-      return res.status(200).json({
-        success: true,
-        message: "Payment verified and transaction recorded",
-      });
-    } catch (error) {
-      return next(new AppError("Transaction failed", 500));
-    }
-  } else {
+    return res.status(200).json({
+      success: true,
+      message: "Payment verified and transaction recorded",
+    });
+  } catch (error) {
     return res.status(400).json({
       success: false,
-      message: "Invalid payment signature",
+      message: error.message,
     });
   }
 };

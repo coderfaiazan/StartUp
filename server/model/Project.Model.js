@@ -71,10 +71,10 @@ const ProjectSchema = new mongoose.Schema(
         ref: "Transaction",
       },
     ],
-    backers: {
+    backers: [{
       type: Schema.Types.ObjectId,
       ref: "User",
-    },
+    }],
     posts: [
       {
         type: Schema.Types.ObjectId,
