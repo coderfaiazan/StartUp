@@ -76,7 +76,7 @@ const verifyPayment = async (req, res, next) => {
     if (!user.backedProjects) user.backedProjects = [];
 
     // Update project and user records
-    project.amountRaised += amount;
+    project.amountRaised += Number(amount);
     project.transactions.push(transaction._id);
     project.backers.push(userId);
     await project.save();

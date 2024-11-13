@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { updateProject } from "../Redux/Slices/projectSlice";
+import { createTransaction } from "../service/transaction";
 
 const DonationModal = ({ project, onClose, onDonate }) => {
   const [amount, setAmount] = useState("");
@@ -83,24 +83,31 @@ const DonationModal = ({ project, onClose, onDonate }) => {
   const handleDonate = () => {
     if (amount <= 0) {
       alert("Invalid Amount!");
-    } else if (amount > project.fundingGoal + project.amountRaised) {
-      console.log("Amount is very large!");
+    } else if (amount >= project.fundingGoal - project.amountRaised) {
+      alert("Amount is very large!");
     } else {
       try {
         // onPayment(amount, project.title);
-        dispatch(
-          updateProject({
-            id: project._id,
-            amountRaised: amount,
-            ...project,
-          })
-        );
-        onDonate({
-          success: true,
-          amount: parseFloat(amount),
-          rewardId: selectedReward ? selectedReward._id : null,
-          isAnonymous,
+        // dispatch(
+        //   updateProject({
+        //     id: project._id,
+        //     amountRaised: amount,
+        //     ...project,
+        //   })
+        // );
+        createTransaction({
+          userId: userData._id,
+          projectId: project._id,
+          amount,
         });
+        setTimeout(() => {
+          onDonate({
+            success: true,
+            amount: parseFloat(amount),
+            rewardId: selectedReward ? selectedReward._id : null,
+            isAnonymous,
+          });
+        }, 3000);
       } catch (error) {
         onDonate({
           success: false,

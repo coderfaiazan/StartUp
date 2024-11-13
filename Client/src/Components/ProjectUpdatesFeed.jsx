@@ -19,11 +19,15 @@ const ProjectUpdatesFeed = ({ projectId, updates, isAuthor }) => {
 
   const dispatch = useDispatch();
 
-  const handlePostUpdate = () => {
+  const handlePostUpdate = async () => {
     if (newUpdate.trim()) {
-      dispatch(addPost({ projectId, content: newUpdate }));
-      setNewUpdate("");
-      window.location.reload();
+      const response = await dispatch(
+        addPost({ projectId, content: newUpdate })
+      );
+      if (response) {
+        setNewUpdate("");
+        window.location.reload();
+      }
     }
   };
 

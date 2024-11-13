@@ -259,7 +259,7 @@ function ProjectDetailsPage() {
               ></div>
             </div>
             <div className="flex justify-between text-gray-600">
-              <span>{project.backers} backers</span>
+              <span>{project.backers ? project.backers.length : 0} backers</span>
               <span>
                 {calculateDaysToGo(project.createdAt, project.deadline)} days to
                 go
